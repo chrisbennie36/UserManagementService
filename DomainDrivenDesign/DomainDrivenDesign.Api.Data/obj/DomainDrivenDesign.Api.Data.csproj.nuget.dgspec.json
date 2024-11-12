@@ -1,0 +1,144 @@
+{
+  "format": 1,
+  "restore": {
+    "c:\\Projects\\DomainDrivenDesign\\DomainDrivenDesign\\DomainDrivenDesign.Api.Data\\DomainDrivenDesign.Api.Data.csproj": {}
+  },
+  "projects": {
+    "c:\\Projects\\DomainDrivenDesign\\DomainDrivenDesign\\DomainDrivenDesign.Api.Data\\DomainDrivenDesign.Api.Data.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "c:\\Projects\\DomainDrivenDesign\\DomainDrivenDesign\\DomainDrivenDesign.Api.Data\\DomainDrivenDesign.Api.Data.csproj",
+        "projectName": "DomainDrivenDesign.Api.Data",
+        "projectPath": "c:\\Projects\\DomainDrivenDesign\\DomainDrivenDesign\\DomainDrivenDesign.Api.Data\\DomainDrivenDesign.Api.Data.csproj",
+        "packagesPath": "C:\\Users\\chris\\.nuget\\packages\\",
+        "outputPath": "c:\\Projects\\DomainDrivenDesign\\DomainDrivenDesign\\DomainDrivenDesign.Api.Data\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\chris\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Projects\\DomainDrivenDesign\\DomainDrivenDesign\\DomainDrivenDesign.Shared.Enums\\DomainDrivenDesign.Shared.Enums.csproj": {
+                "projectPath": "C:\\Projects\\DomainDrivenDesign\\DomainDrivenDesign\\DomainDrivenDesign.Shared.Enums\\DomainDrivenDesign.Shared.Enums.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.10, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.10, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[8.0.10, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Projects\\DomainDrivenDesign\\DomainDrivenDesign\\DomainDrivenDesign.Shared.Enums\\DomainDrivenDesign.Shared.Enums.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Projects\\DomainDrivenDesign\\DomainDrivenDesign\\DomainDrivenDesign.Shared.Enums\\DomainDrivenDesign.Shared.Enums.csproj",
+        "projectName": "DomainDrivenDesign.Shared.Enums",
+        "projectPath": "C:\\Projects\\DomainDrivenDesign\\DomainDrivenDesign\\DomainDrivenDesign.Shared.Enums\\DomainDrivenDesign.Shared.Enums.csproj",
+        "packagesPath": "C:\\Users\\chris\\.nuget\\packages\\",
+        "outputPath": "C:\\Projects\\DomainDrivenDesign\\DomainDrivenDesign\\DomainDrivenDesign.Shared.Enums\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\chris\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

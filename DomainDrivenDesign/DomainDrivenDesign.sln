@@ -1,0 +1,59 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainDrivenDesign.Api.WebApplication", "Api\DomainDrivenDesign.Api.WebApplication\DomainDrivenDesign.Api.WebApplication.csproj", "{981C10AC-4483-4C51-AE35-4B25876EB31B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{E1D750DB-F499-4519-8132-C12A70E9B8A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainDrivenDesign.Api.Domain", "DomainDrivenDesign.Api.Domain\DomainDrivenDesign.Api.Domain.csproj", "{D320F535-3F6F-42D1-883A-77D55081CEDE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C6BC9A3E-146D-4066-BC7D-EDF773C55A08}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainDrivenDesign.Api.Domain.Tests", "DomainDrivenDesign.Api.Domain.Tests\DomainDrivenDesign.Api.Domain.Tests.csproj", "{7BAAA20C-AB3F-486E-AEE6-9CAC4D7D6AF4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainDrivenDesign.Api.Data", "DomainDrivenDesign.Api.Data\DomainDrivenDesign.Api.Data.csproj", "{2AEEAD48-70BA-4154-A969-F4643578B133}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{C92AD0E0-DC9E-48A6-8FFA-281C1AA72A66}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainDrivenDesign.Shared.Enums", "DomainDrivenDesign.Shared.Enums\DomainDrivenDesign.Shared.Enums.csproj", "{29E1BCB3-7585-41F7-9B02-50FD2720CA17}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{981C10AC-4483-4C51-AE35-4B25876EB31B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{981C10AC-4483-4C51-AE35-4B25876EB31B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{981C10AC-4483-4C51-AE35-4B25876EB31B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{981C10AC-4483-4C51-AE35-4B25876EB31B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D320F535-3F6F-42D1-883A-77D55081CEDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D320F535-3F6F-42D1-883A-77D55081CEDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D320F535-3F6F-42D1-883A-77D55081CEDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D320F535-3F6F-42D1-883A-77D55081CEDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BAAA20C-AB3F-486E-AEE6-9CAC4D7D6AF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BAAA20C-AB3F-486E-AEE6-9CAC4D7D6AF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BAAA20C-AB3F-486E-AEE6-9CAC4D7D6AF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BAAA20C-AB3F-486E-AEE6-9CAC4D7D6AF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AEEAD48-70BA-4154-A969-F4643578B133}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AEEAD48-70BA-4154-A969-F4643578B133}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AEEAD48-70BA-4154-A969-F4643578B133}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AEEAD48-70BA-4154-A969-F4643578B133}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29E1BCB3-7585-41F7-9B02-50FD2720CA17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29E1BCB3-7585-41F7-9B02-50FD2720CA17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29E1BCB3-7585-41F7-9B02-50FD2720CA17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29E1BCB3-7585-41F7-9B02-50FD2720CA17}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{29E1BCB3-7585-41F7-9B02-50FD2720CA17} = {C92AD0E0-DC9E-48A6-8FFA-281C1AA72A66}
+		{2AEEAD48-70BA-4154-A969-F4643578B133} = {E1D750DB-F499-4519-8132-C12A70E9B8A8}
+		{7BAAA20C-AB3F-486E-AEE6-9CAC4D7D6AF4} = {C6BC9A3E-146D-4066-BC7D-EDF773C55A08}
+		{D320F535-3F6F-42D1-883A-77D55081CEDE} = {E1D750DB-F499-4519-8132-C12A70E9B8A8}
+		{981C10AC-4483-4C51-AE35-4B25876EB31B} = {E1D750DB-F499-4519-8132-C12A70E9B8A8}
+	EndGlobalSection
+EndGlobal

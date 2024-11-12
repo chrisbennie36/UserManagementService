@@ -1,0 +1,17 @@
+2024-11-04 14:49:22.940 +01:00 [DBG] Firing a AddMessageCommand
+2024-11-04 14:49:27.521 +01:00 [DBG] Handling AddMessageCommand
+2024-11-04 14:49:38.292 +01:00 [ERR] Error when writing a Message to the database: No database provider has been configured for this DbContext. A provider can be configured by overriding the 'DbContext.OnConfiguring' method or by using 'AddDbContext' on the application service provider. If 'AddDbContext' is used, then also ensure that your DbContext type accepts a DbContextOptions<TContext> object in its constructor and passes it to the base constructor for DbContext.
+2024-11-04 14:52:26.463 +01:00 [DBG] Firing a AddMessageCommand
+2024-11-04 14:52:29.722 +01:00 [DBG] Handling AddMessageCommand
+2024-11-04 15:12:47.976 +01:00 [DBG] Firing a AddMessageCommand
+2024-11-04 15:12:51.300 +01:00 [DBG] Handling AddMessageCommand
+2024-11-04 15:13:24.065 +01:00 [DBG] Firing a AddMessageCommand
+2024-11-04 15:13:26.883 +01:00 [DBG] Handling AddMessageCommand
+2024-11-04 15:19:10.892 +01:00 [DBG] Firing a AddMessageCommand
+2024-11-04 15:19:15.791 +01:00 [DBG] Handling AddMessageCommand
+2024-11-04 15:19:34.065 +01:00 [DBG] Firing a AddMessageCommand
+2024-11-04 15:19:38.864 +01:00 [DBG] Handling AddMessageCommand
+2024-11-04 15:29:49.277 +01:00 [DBG] Firing a AddMessageCommand
+2024-11-04 15:29:53.696 +01:00 [DBG] Handling AddMessageCommand
+2024-11-04 15:32:49.897 +01:00 [DBG] Firing a AddMessageCommand
+2024-11-04 15:32:53.028 +01:00 [DBG] Handling AddMessageCommand
