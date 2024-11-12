@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{C92AD0
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserManagementService.Shared.Enums", "Shared\UserManagementService.Shared.Enums\UserManagementService.Shared.Enums.csproj", "{29E1BCB3-7585-41F7-9B02-50FD2720CA17}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserManagementService.Api.Client", "Api\UserManagementService.Api.Client\UserManagementService.Api.Client.csproj", "{98D6118C-A938-4AEA-BCF7-9E52070C45C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,8 +42,13 @@ Global
 		{29E1BCB3-7585-41F7-9B02-50FD2720CA17}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29E1BCB3-7585-41F7-9B02-50FD2720CA17}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29E1BCB3-7585-41F7-9B02-50FD2720CA17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98D6118C-A938-4AEA-BCF7-9E52070C45C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98D6118C-A938-4AEA-BCF7-9E52070C45C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98D6118C-A938-4AEA-BCF7-9E52070C45C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98D6118C-A938-4AEA-BCF7-9E52070C45C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{98D6118C-A938-4AEA-BCF7-9E52070C45C0} = {E1D750DB-F499-4519-8132-C12A70E9B8A8}
 		{29E1BCB3-7585-41F7-9B02-50FD2720CA17} = {C92AD0E0-DC9E-48A6-8FFA-281C1AA72A66}
 		{2AEEAD48-70BA-4154-A969-F4643578B133} = {E1D750DB-F499-4519-8132-C12A70E9B8A8}
 		{D320F535-3F6F-42D1-883A-77D55081CEDE} = {E1D750DB-F499-4519-8132-C12A70E9B8A8}
