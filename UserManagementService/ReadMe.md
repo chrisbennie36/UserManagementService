@@ -1,5 +1,8 @@
-## Entity Framework
+## User Management Microservice
 
-# Perform the below in a powershell window, from within the API Web Application project directory
-1) dotnet ef migrations add <MigrationName>
-2) dotnet ef database update
+# CQRS Microservice for User Management - makes use of JWT authentication
+
+#ToDo:
+1) Encrypt passwords stored in the database
+2) Add role based authorization
+3) Add unit tests
