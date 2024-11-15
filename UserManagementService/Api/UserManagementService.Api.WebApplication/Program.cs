@@ -32,6 +32,7 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddValidatorsFromAssemblyContaining<UserDtoValidator>();
 
 builder.Services.AddDbContext<AppDbContext>();
+builder.Services.AddTransient<IMigrationsRepository, MigrationsRepository>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => 
 {

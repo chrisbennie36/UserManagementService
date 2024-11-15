@@ -17,6 +17,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserManagementService.Share
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserManagementService.Api.Client", "Api\UserManagementService.Api.Client\UserManagementService.Api.Client.csproj", "{98D6118C-A938-4AEA-BCF7-9E52070C45C0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{EF11D20C-D490-4EC5-BA46-6E89AB0A5104}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserManagementService.Build.Infrastructure", "Build\UserManagementService.Build.Infrastructure\UserManagementService.Build.Infrastructure.csproj", "{9A39929E-48FD-485F-AD8B-B60FE696B779}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseMigrationLambda", "Lambdas\DatabaseMigrationLambda\DatabaseMigrationLambda.csproj", "{02801C4B-7D5C-430F-92D4-B8736495EB2B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lambdas", "Lambdas", "{98117781-4E28-457B-ABB2-7C2ECAE89500}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,8 +54,18 @@ Global
 		{98D6118C-A938-4AEA-BCF7-9E52070C45C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98D6118C-A938-4AEA-BCF7-9E52070C45C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98D6118C-A938-4AEA-BCF7-9E52070C45C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A39929E-48FD-485F-AD8B-B60FE696B779}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A39929E-48FD-485F-AD8B-B60FE696B779}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A39929E-48FD-485F-AD8B-B60FE696B779}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A39929E-48FD-485F-AD8B-B60FE696B779}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02801C4B-7D5C-430F-92D4-B8736495EB2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02801C4B-7D5C-430F-92D4-B8736495EB2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02801C4B-7D5C-430F-92D4-B8736495EB2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02801C4B-7D5C-430F-92D4-B8736495EB2B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{02801C4B-7D5C-430F-92D4-B8736495EB2B} = {98117781-4E28-457B-ABB2-7C2ECAE89500}
+		{9A39929E-48FD-485F-AD8B-B60FE696B779} = {EF11D20C-D490-4EC5-BA46-6E89AB0A5104}
 		{98D6118C-A938-4AEA-BCF7-9E52070C45C0} = {E1D750DB-F499-4519-8132-C12A70E9B8A8}
 		{29E1BCB3-7585-41F7-9B02-50FD2720CA17} = {C92AD0E0-DC9E-48A6-8FFA-281C1AA72A66}
 		{2AEEAD48-70BA-4154-A969-F4643578B133} = {E1D750DB-F499-4519-8132-C12A70E9B8A8}
