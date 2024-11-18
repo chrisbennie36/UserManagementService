@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using NSwag.Generation.Processors.Security;
+using UserManagementService.Api.Data.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +46,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"] ?? string.Empty))
     };
 });
+
+EncryptionHelper.SetEncryptionKey(builder.Configuration["Encryption:Key"] ?? string.Empty);
+EncryptionHelper.SetInitialisationVector(builder.Configuration["Encryption:IV"] ?? string.Empty);
 
 builder.Services.AddAuthorization();
 

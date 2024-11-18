@@ -1,0 +1,2 @@
+2024-11-18 14:14:20.691 +01:00 [ERR] Error when writing a User to the database: Cannot create an instance of value converter type 'EncryptionConverter'. Ensure that the type can be instantiated and has a parameterless constructor, or use the overload of 'HasConversion' that accepts a delegate.
+2024-11-18 14:37:55.611 +01:00 [ERR] Error when writing a User to the database: An error occurred while saving the entity changes. See the inner exception for details.

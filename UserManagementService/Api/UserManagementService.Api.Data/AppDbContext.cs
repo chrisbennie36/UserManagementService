@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.Extensions.Configuration;
+using UserManagementService.Api.Data.Converters;
+using UserManagementService.Api.Data.Helpers;
 
 namespace UserManagementService.Api.Data;
 
@@ -22,12 +25,19 @@ public class AppDbContext : DbContext
     {
         if(string.IsNullOrWhiteSpace(connectionString))
         {
-            options.UseNpgsql(configuration.GetConnectionString("ApiAwsConnectionString"), b => b.MigrationsAssembly("UserManagementService.Api.WebApplication"));
+            options.UseNpgsql(configuration.GetConnectionString("ApiLocalConnectionString"), b => b.MigrationsAssembly("UserManagementService.Api.WebApplication"));
         }
         else
         {
             options.UseNpgsql(connectionString, b => b.MigrationsAssembly("UserManagementService.Api.WebApplication"));
         }
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        EntityTypeBuilder<User> userEntityBuilder = modelBuilder.Entity<User>();
+
+         userEntityBuilder.Property(x => x.Password).HasConversion(v => EncryptionHelper.Encrypt(v), v => EncryptionHelper.Decrypt(v));
     }
 
     public DbSet<User> Users { get; set; }

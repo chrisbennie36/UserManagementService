@@ -31,6 +31,13 @@ public class DatabaseStack : Stack
             }
         });
 
+        SecurityGroup securityGroup = new SecurityGroup(this, "db-security-group", new SecurityGroupProps
+        {
+            Vpc = vpc,
+        });
+
+        securityGroup.AddIngressRule(Peer.Ipv4("192.168.178.220"), Port.Tcp(5275), "Development PC");
+
         const int dbPort = 5432;
 
         DatabaseInstance db = new DatabaseInstance(this, "personal-projects-db", new DatabaseInstanceProps
@@ -41,7 +48,8 @@ public class DatabaseStack : Stack
             {
                 Version = PostgresEngineVersion.VER_16_3
             }),
-            InstanceType = new Amazon.CDK.AWS.EC2.InstanceType("m7i.48xlarge"),
+            InstanceType = new Amazon.CDK.AWS.EC2.InstanceType("db.t3.micro"),  //db.t4g.micro or db.t3.micro for free tier - IMPORTANT
+            AllocatedStorage = 5,
             Port = dbPort,
             DatabaseName = "Projects",
             InstanceIdentifier = "projects-db-instance",
