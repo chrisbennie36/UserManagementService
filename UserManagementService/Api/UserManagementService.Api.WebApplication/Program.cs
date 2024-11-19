@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using NSwag.Generation.Processors.Security;
 using UserManagementService.Api.Data.Helpers;
+using UserManagementService.Api.WebApplication.ExceptionHandler;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +36,8 @@ builder.Services.AddValidatorsFromAssemblyContaining<UserDtoValidator>();
 builder.Services.AddDbContext<AppDbContext>();
 builder.Services.AddTransient<IMigrationsRepository, MigrationsRepository>();
 
+builder.Services.AddProblemDetails().AddExceptionHandler<GlobalExceptionHandler>();
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => 
 {
     options.RequireHttpsMetadata = false;   //NOTE: ONLY FOR DEVELOPMENT
@@ -61,6 +64,9 @@ if(app.Environment.IsDevelopment())
     app.UseOpenApi();
     app.UseSwaggerUi();
 }
+
+app.UseStatusCodePages();
+app.UseExceptionHandler();
 
 //The following three should be in this exact order - see here: https://stackoverflow.com/questions/43574552/authorization-in-asp-net-core-always-401-unauthorized-for-authorize-attribute
 app.UseAuthentication();
