@@ -31,6 +31,8 @@ public class LoginController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult> Login([FromBody] UserDto userDto)
     {        
+        logger.LogInformation("Attempting login for user {username}", userDto.Username);
+
         UserResult? authenticatedUser = await AuthenticateUser(userDto);
 
         if(authenticatedUser == null)
@@ -45,7 +47,7 @@ public class LoginController : ControllerBase
 
     private async Task<UserResult?> AuthenticateUser(UserDto user)
     {
-        UserResult? existingUser = await sender.Send(new GetUserByUsernameAndPasswordQuery(user.Username, user.Password));
+        UserResult? existingUser = await sender.Send(new GetUserByUserCredentialsQuery(user.Username, user.Password));
 
         if(existingUser == null)
         {

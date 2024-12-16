@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.Extensions.Configuration;
-using UserManagementService.Api.Data.Converters;
 using UserManagementService.Api.Data.Helpers;
 
 namespace UserManagementService.Api.Data;
@@ -9,28 +8,9 @@ namespace UserManagementService.Api.Data;
 public class AppDbContext : DbContext
 {
     protected readonly IConfiguration configuration;
-    private readonly string connectionString;
 
-    public AppDbContext(IConfiguration configuration) : base()
+    public AppDbContext(DbContextOptions options) : base(options)
     {
-        this.configuration = configuration;
-    }
-
-    public AppDbContext(string connectionString) : base()
-    {
-        this.connectionString = connectionString;
-    }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder options)
-    {
-        if(string.IsNullOrWhiteSpace(connectionString))
-        {
-            options.UseNpgsql(configuration.GetConnectionString("ApiLocalConnectionString"), b => b.MigrationsAssembly("UserManagementService.Api.WebApplication"));
-        }
-        else
-        {
-            options.UseNpgsql(connectionString, b => b.MigrationsAssembly("UserManagementService.Api.WebApplication"));
-        }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

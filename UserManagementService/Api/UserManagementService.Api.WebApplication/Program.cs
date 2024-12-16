@@ -9,6 +9,12 @@ using Serilog;
 using NSwag.Generation.Processors.Security;
 using UserManagementService.Api.Data.Helpers;
 using UserManagementService.Api.WebApplication.ExceptionHandler;
+using Amazon.CloudWatchLogs;
+using Amazon.Runtime;
+using Serilog.Sinks.AwsCloudWatch;
+using Microsoft.AspNetCore.Identity.Data;
+using Amazon;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,7 +39,7 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AddUs
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddValidatorsFromAssemblyContaining<UserDtoValidator>();
 
-builder.Services.AddDbContext<AppDbContext>();
+builder.Services.AddScoped<AppDbContext>(db => new AppDbContext(new DbContextOptionsBuilder().UseNpgsql(builder.Configuration.GetConnectionString("ApiLocalConnectionString")).Options));
 builder.Services.AddTransient<IMigrationsRepository, MigrationsRepository>();
 
 builder.Services.AddProblemDetails().AddExceptionHandler<GlobalExceptionHandler>();
@@ -57,7 +63,24 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-Log.Logger = new LoggerConfiguration().WriteTo.File("logs-", rollingInterval: RollingInterval.Day).MinimumLevel.Debug().CreateLogger();
+if(Boolean.Parse(builder.Configuration["AwsCloudwatchLogging:Enabled"]) == true)
+{
+    var client = new AmazonCloudWatchLogsClient(new BasicAWSCredentials(builder.Configuration["AwsCloudwatchLogging:AccessKey"], builder.Configuration["AwsCloudwatchLogging:SecretKey"]), RegionEndpoint.USEast1);
+
+    Log.Logger = new LoggerConfiguration().WriteTo.AmazonCloudWatch(
+        logGroup: builder.Configuration["AwsCloudwatchLogging:LogGroup"],
+        logStreamPrefix: builder.Configuration["AwsCloudwatchLogging:LogStreamPrefix"],
+        restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Verbose,
+        createLogGroup: true,
+        appendUniqueInstanceGuid: true,
+        appendHostName: false,
+        logGroupRetentionPolicy: LogGroupRetentionPolicy.ThreeDays,
+        cloudWatchClient: client).CreateLogger();
+}
+else
+{
+    Log.Logger = new LoggerConfiguration().WriteTo.File("./Logs/logs-", rollingInterval: RollingInterval.Day).MinimumLevel.Debug().CreateLogger();
+}
 
 if(app.Environment.IsDevelopment())
 {

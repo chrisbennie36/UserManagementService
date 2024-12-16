@@ -1,4 +1,4 @@
-
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
@@ -24,6 +24,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseMigrationLambda", "Lambdas\DatabaseMigrationLambda\DatabaseMigrationLambda.csproj", "{02801C4B-7D5C-430F-92D4-B8736495EB2B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lambdas", "Lambdas", "{98117781-4E28-457B-ABB2-7C2ECAE89500}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A17AD419-7A43-4D18-9666-3B4E7EFCCD84}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserManagementService.Api.Domain.Tests", "UserManagementService.Api.Domain.Tests\UserManagementService.Api.Domain.Tests.csproj", "{72E2D13A-119B-4A77-A390-ADE57C919552}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,6 +66,10 @@ Global
 		{02801C4B-7D5C-430F-92D4-B8736495EB2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02801C4B-7D5C-430F-92D4-B8736495EB2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{02801C4B-7D5C-430F-92D4-B8736495EB2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72E2D13A-119B-4A77-A390-ADE57C919552}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72E2D13A-119B-4A77-A390-ADE57C919552}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72E2D13A-119B-4A77-A390-ADE57C919552}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72E2D13A-119B-4A77-A390-ADE57C919552}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{02801C4B-7D5C-430F-92D4-B8736495EB2B} = {98117781-4E28-457B-ABB2-7C2ECAE89500}

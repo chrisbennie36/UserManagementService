@@ -6,6 +6,10 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
+using UserManagementService.Api.WebApplication.Responses;
+using UserManagementService.Api.Domain.Results;
+using Serilog;
 
 namespace UserManagementService.Api.WebApplication.Controllers;
 
@@ -15,15 +19,17 @@ public class UserController : ControllerBase
 {
     private readonly ISender sender;
     private readonly IValidator<UserDto> userDtoValidator;
+    private readonly IMapper mapper;
 
-    public UserController(ISender sender, IValidator<UserDto> userDtoValidator)
+    public UserController(ISender sender, IValidator<UserDto> userDtoValidator, IMapper mapper)
     {
         this.sender = sender;
         this.userDtoValidator = userDtoValidator;
+        this.mapper = mapper;
     }
 
     [HttpGet("{userId}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType<UserResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> GetUser([FromRoute] int userId)
     {        
@@ -34,14 +40,35 @@ public class UserController : ControllerBase
             return NotFound();
         }
 
-        return Ok(result);
+        return Ok(mapper.Map<UserResponse>(result));
+    }
+
+    [HttpPost("/api/User/GetUserByCredentials")]
+    [ProducesResponseType<UserResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)] 
+    public async Task<ActionResult> GetUserByCredentials([FromBody] UserDto userDto)
+    {
+        if(string.IsNullOrWhiteSpace(userDto.Username) || string.IsNullOrWhiteSpace(userDto.Password)) {
+            return NotFound();
+        }
+
+        var result = await sender.Send(new GetUserByUserCredentialsQuery(userDto.Username, userDto.Password));
+
+        if(result == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(mapper.Map<UserResponse>(result));
     }
 
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType<UserResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> CreateUser(UserDto userDto)
     {        
+        Log.Information("Creating a new user, validating first");
+        
         //Can also validate automatically without the need to inject a validator. Requires a 3rd party library - see here: https://github.com/SharpGrip/FluentValidation.AutoValidation
         var validationResult = userDtoValidator.Validate(userDto);
 
@@ -51,14 +78,14 @@ public class UserController : ControllerBase
             return BadRequest(validationResult);
         }
 
-        var result = await sender.Send(new AddUserCommand(userDto.Username, userDto.Password, userDto.Role));
+        UserResult? result = await sender.Send(new AddUserCommand(userDto.Username, userDto.Password, userDto.Role));
 
-        if(result == false)
+        if(result == null)
         {
-            return BadRequest(result);
+            return BadRequest();
         }
 
-        return Ok();
+        return Ok(mapper.Map<UserResponse>(result));
     }
 
     [HttpPut("{userId}")]

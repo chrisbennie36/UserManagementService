@@ -8,18 +8,18 @@ using Serilog;
 
 namespace UserManagementService.Api.Domain.Handlers;
 
-public class GetUserByUsernameAndPasswordQueryHandler: IRequestHandler<GetUserByUsernameAndPasswordQuery, UserResult?>
+public class GetUserByUserCredentialsQueryHandler: IRequestHandler<GetUserByUserCredentialsQuery, UserResult?>
 {
     private readonly AppDbContext appDbContext;
     private readonly IMapper mapper;
 
-    public GetUserByUsernameAndPasswordQueryHandler(AppDbContext appDbContext, IMapper mapper)
+    public GetUserByUserCredentialsQueryHandler(AppDbContext appDbContext, IMapper mapper)
     {
         this.appDbContext = appDbContext;
         this.mapper = mapper;
     }
 
-    public async Task<UserResult?> Handle(GetUserByUsernameAndPasswordQuery request, CancellationToken cancellationToken)
+    public async Task<UserResult?> Handle(GetUserByUserCredentialsQuery request, CancellationToken cancellationToken)
     {
         try
         {

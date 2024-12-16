@@ -29,7 +29,7 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
         return exception switch
         {
             //ArgumentNullException => 
-            _ => (StatusCodes.Status500InternalServerError, "An error has occurred, we are investigating")
+            _ => (StatusCodes.Status500InternalServerError, exception.Message)
         };
     }
 }
