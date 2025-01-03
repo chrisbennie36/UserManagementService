@@ -23,7 +23,9 @@ public class GetUserByUserCredentialsQueryHandler: IRequestHandler<GetUserByUser
     {
         try
         {
-            User? existingUser = await appDbContext.Users.SingleOrDefaultAsync(u => u.Username == request.username && u.Password == request.password);
+            User? existingUser = await appDbContext.Users
+            .AsNoTracking()
+            .SingleOrDefaultAsync(u => u.Username == request.username && u.Password == request.password);
             
             if(existingUser == null)
             {
