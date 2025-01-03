@@ -35,7 +35,9 @@ public class UserController : ControllerBase
     {        
         var result = await sender.Send(new GetUserByIdQuery(userId));
 
-        if(result == null)
+        return result.ToActionResult();
+
+        if(result.status == ResponseStatus.NotFound)
         {
             return NotFound();
         }
@@ -54,12 +56,12 @@ public class UserController : ControllerBase
 
         var result = await sender.Send(new GetUserByUserCredentialsQuery(userDto.Username, userDto.Password));
 
-        if(result == null)
+        if(result.status == ResponseStatus.Success)
         {
-            return NotFound();
+            return Ok(mapper.Map<UserResponse>(result.resultModel));
         }
 
-        return Ok(mapper.Map<UserResponse>(result));
+        return result.ToActionResult();
     }
 
     [HttpPost]
@@ -78,14 +80,14 @@ public class UserController : ControllerBase
             return BadRequest(validationResult);
         }
 
-        UserResult? result = await sender.Send(new AddUserCommand(userDto.Username, userDto.Password, userDto.Role));
+        var result = await sender.Send(new AddUserCommand(userDto.Username, userDto.Password, userDto.Role));
 
-        if(result == null)
+        if(result.status == ResponseStatus.Success)
         {
-            return BadRequest();
+            return Ok(mapper.Map<UserResponse>(result.resultModel));
         }
 
-        return Ok(mapper.Map<UserResponse>(result));
+        return result.ToActionResult();
     }
 
     [HttpPut("{userId}")]
@@ -106,12 +108,7 @@ public class UserController : ControllerBase
 
         var result = await sender.Send(new UpdateUserCommand(userId, userDto.Username, userDto.Password, userDto.Role));
 
-        if(result == false)
-        {
-            return BadRequest(result);
-        }
-
-        return Ok();
+        return result.ToActionResult();
     }
 
     [HttpDelete("{userId}")]
@@ -121,11 +118,6 @@ public class UserController : ControllerBase
     {        
         var result = await sender.Send(new DeleteUserCommand(userId));
 
-        if(result == false)
-        {
-            return BadRequest(result);
-        }
-
-        return Ok();
+        return result.ToActionResult();
     }
 }

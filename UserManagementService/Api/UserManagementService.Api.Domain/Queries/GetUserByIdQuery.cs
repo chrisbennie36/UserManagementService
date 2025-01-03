@@ -3,4 +3,4 @@ using MediatR;
 
 namespace UserManagementService.Api.Domain.Queries;
 
-public record GetUserByIdQuery(int userId) : IRequest<UserResult?>;
+public record GetUserByIdQuery(int userId) : IRequest<DomainResult<UserResult>>;

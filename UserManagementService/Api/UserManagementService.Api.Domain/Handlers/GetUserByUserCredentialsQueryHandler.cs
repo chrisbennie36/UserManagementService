@@ -8,7 +8,7 @@ using Serilog;
 
 namespace UserManagementService.Api.Domain.Handlers;
 
-public class GetUserByUserCredentialsQueryHandler: IRequestHandler<GetUserByUserCredentialsQuery, UserResult?>
+public class GetUserByUserCredentialsQueryHandler: IRequestHandler<GetUserByUserCredentialsQuery, DomainResult<UserResult>>
 {
     private readonly AppDbContext appDbContext;
     private readonly IMapper mapper;
@@ -19,7 +19,7 @@ public class GetUserByUserCredentialsQueryHandler: IRequestHandler<GetUserByUser
         this.mapper = mapper;
     }
 
-    public async Task<UserResult?> Handle(GetUserByUserCredentialsQuery request, CancellationToken cancellationToken)
+    public async Task<DomainResult<UserResult>> Handle(GetUserByUserCredentialsQuery request, CancellationToken cancellationToken)
     {
         try
         {
@@ -29,15 +29,19 @@ public class GetUserByUserCredentialsQueryHandler: IRequestHandler<GetUserByUser
             
             if(existingUser == null)
             {
-                return null;
+                string errorMessage = $"Could not retrieve a {nameof(User)} for the provided credentials from the database";
+                Log.Error(errorMessage);
+                return new DomainResult<UserResult>(ResponseStatus.NotFound, null, errorMessage);
             }
 
-            return mapper.Map<UserResult>(existingUser);
+            UserResult userResult = mapper.Map<UserResult>(existingUser);
+            return new DomainResult<UserResult>(ResponseStatus.Success, userResult);
         }
         catch(Exception e)
         {
-            Log.Error($"Error when retrieving a {nameof(User)} from the database: {e.Message}");
-            return null;
+            string errorMessage = $"Error when retrieving a {nameof(User)} using {nameof(User)} credentials from the database: {e.Message}";
+            Log.Error(errorMessage);
+            return new DomainResult<UserResult>(ResponseStatus.Error, null, errorMessage);
         }
     }
 }

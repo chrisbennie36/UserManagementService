@@ -2,10 +2,11 @@ using UserManagementService.Api.Data;
 using UserManagementService.Api.Domain.Commands;
 using MediatR;
 using Serilog;
+using UserManagementService.Api.Domain.Results;
 
 namespace UserManagementService.Api.Domain.Handlers;
 
-public class UpdateUserCommandHandler: IRequestHandler<UpdateUserCommand, bool>
+public class UpdateUserCommandHandler: IRequestHandler<UpdateUserCommand, DomainResult>
 {
     private readonly AppDbContext appDbContext;
 
@@ -14,7 +15,7 @@ public class UpdateUserCommandHandler: IRequestHandler<UpdateUserCommand, bool>
         this.appDbContext = appDbContext;
     }
 
-    public async Task<bool> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+    public async Task<DomainResult> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -22,7 +23,8 @@ public class UpdateUserCommandHandler: IRequestHandler<UpdateUserCommand, bool>
 
             if(existingUser == null)
             {
-                return false; //return NotFoundError?
+                Log.Error($"Coudln't find a {nameof(User)} to update for ID {request.userId}");
+                return new DomainResult(ResponseStatus.NotFound, $"Couldn't find a {nameof(User)} to update");
             }
 
             existingUser.Username = request.username;
@@ -31,12 +33,13 @@ public class UpdateUserCommandHandler: IRequestHandler<UpdateUserCommand, bool>
             existingUser.UpdatedUtc = DateTime.UtcNow;
 
             await appDbContext.SaveChangesAsync();
-            return true;
+            return new DomainResult(ResponseStatus.Success);
         }
         catch(Exception e)
         {
-            Log.Error($"Error when writing a {nameof(User)} to the database: {e.Message}");
-            return false;
+            string errorMessage = $"Error when writing a {nameof(User)} to the database: {e.Message}";
+            Log.Error(errorMessage);
+            return new DomainResult(ResponseStatus.Error, errorMessage);
         }
     }
 }

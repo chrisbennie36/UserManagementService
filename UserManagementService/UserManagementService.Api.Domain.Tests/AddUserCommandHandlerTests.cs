@@ -41,9 +41,10 @@ public class AddUserCommandHandlerTests : IClassFixture<TestDatabaseFixture>, ID
         var response = await sut.Handle(new AddUserCommand(Username, Password, Role), CancellationToken.None);
 
         Assert.NotNull(response);
-        Assert.Equal(Username, response.Username);
-        Assert.Equal(Password, response.Password);
-        Assert.Equal(Role, response.Role);
+        Assert.NotNull(response.resultModel);
+        Assert.Equal(Username, response.resultModel.Username);
+        Assert.Equal(Password, response.resultModel.Password);
+        Assert.Equal(Role, response.resultModel.Role);
     }
 
     public void Dispose()

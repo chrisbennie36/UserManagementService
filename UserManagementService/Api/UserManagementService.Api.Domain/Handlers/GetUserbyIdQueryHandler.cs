@@ -7,7 +7,7 @@ using Serilog;
 
 namespace UserManagementService.Api.Domain.Handlers;
 
-public class GetUserByIdQueryHandler: IRequestHandler<GetUserByIdQuery, UserResult?>
+public class GetUserByIdQueryHandler: IRequestHandler<GetUserByIdQuery, DomainResult<UserResult>>
 {
     private readonly AppDbContext appDbContext;
     private readonly IMapper mapper;
@@ -18,7 +18,7 @@ public class GetUserByIdQueryHandler: IRequestHandler<GetUserByIdQuery, UserResu
         this.mapper = mapper;
     }
 
-    public async Task<UserResult?> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
+    public async Task<DomainResult<UserResult>> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
     {
         try
         {
@@ -26,15 +26,17 @@ public class GetUserByIdQueryHandler: IRequestHandler<GetUserByIdQuery, UserResu
             
             if(existingUser == null)
             {
-                return null;
+                Log.Error($"Could not find a {nameof(User)} with ID {request.userId}");
+                return new DomainResult<UserResult>(ResponseStatus.NotFound, null);
             }
 
-            return mapper.Map<UserResult>(existingUser);
+            UserResult userResult = mapper.Map<UserResult>(existingUser);
+            return new DomainResult<UserResult>(ResponseStatus.Success, userResult);
         }
         catch(Exception e)
         {
-            Log.Error($"Error when retrieving a {nameof(User)} from the database: {e.Message}");
-            return null;
+            Log.Error($"Error when retrieving a {nameof(User)} with ID {request.userId} from the database: {e.Message}");
+            return new DomainResult<UserResult>(ResponseStatus.Error, null, $"Error when retrieving a {nameof(User)} from the database");
         }
     }
 }

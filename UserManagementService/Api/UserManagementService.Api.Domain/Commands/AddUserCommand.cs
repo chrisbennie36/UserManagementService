@@ -4,5 +4,5 @@ using UserManagementService.Api.Domain.Results;
 
 namespace UserManagementService.Api.Domain.Commands
 {
-    public record AddUserCommand(string username, string password, UserRole role) : IRequest<UserResult?>;
+    public record AddUserCommand(string username, string password, UserRole role) : IRequest<DomainResult<UserResult>>;
 }

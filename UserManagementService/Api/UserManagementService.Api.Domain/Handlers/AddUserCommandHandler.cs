@@ -7,7 +7,7 @@ using UserManagementService.Api.Domain.Results;
 
 namespace UserManagementService.Api.Domain.Handlers;
 
-public class AddUserCommandHandler: IRequestHandler<AddUserCommand, UserResult?>
+public class AddUserCommandHandler: IRequestHandler<AddUserCommand, DomainResult<UserResult>>
 {
     private readonly AppDbContext appDbContext;
     private readonly IMapper mapper;
@@ -18,7 +18,7 @@ public class AddUserCommandHandler: IRequestHandler<AddUserCommand, UserResult?>
         this.mapper = mapper;
     }
 
-    public async Task<UserResult?> Handle(AddUserCommand request, CancellationToken cancellationToken)
+    public async Task<DomainResult<UserResult>> Handle(AddUserCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -34,15 +34,19 @@ public class AddUserCommandHandler: IRequestHandler<AddUserCommand, UserResult?>
 
             if(createdUser == null)
             {
-                return null;
+                return new DomainResult<UserResult>(ResponseStatus.Error, null, $"Could not create a {nameof(User)} in the database");
             }
 
-            return mapper.Map<UserResult>(createdUser);
+            UserResult userResult = mapper.Map<UserResult>(createdUser);
+
+            return new DomainResult<UserResult>(ResponseStatus.Success, userResult);
+
         }
         catch(Exception e)
         {
-            Log.Error($"Error when writing a {nameof(User)} to the database: {e.Message}");
-            return null;
+            string errorMessage = $"Error when writing a {nameof(User)} to the database: {e.Message}";
+            Log.Error(errorMessage);
+            return new DomainResult<UserResult>(ResponseStatus.Error, null, errorMessage);
         }
     }
 }

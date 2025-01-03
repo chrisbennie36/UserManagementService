@@ -47,37 +47,13 @@ public class LoginController : ControllerBase
 
     private async Task<UserResult?> AuthenticateUser(UserDto user)
     {
-        UserResult? existingUser = await sender.Send(new GetUserByUserCredentialsQuery(user.Username, user.Password));
+        var result = await sender.Send(new GetUserByUserCredentialsQuery(user.Username, user.Password));
 
-        if(existingUser == null)
-        {
-            return null;
-        }
-
-        return existingUser;
+        return result.resultModel;
     }
 
     private string GenerateJwtToken()
     {        
-        /*SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"] ?? string.Empty));
-        SigningCredentials credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);*/
-
-        /*var claims = new[] {
-        new Claim(JwtRegisteredClaimNames.Sub, userInfo.Username),
-        new Claim(JwtRegisteredClaimNames.Email, userInfo.EmailAddress),
-        new Claim("DateOfJoing", userInfo.DateOfJoing.ToString("yyyy-MM-dd")),
-        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())*/
-
-        /*JwtSecurityToken token = new JwtSecurityToken(
-            configuration["Jwt:Issuer"] ?? string.Empty,
-            configuration["Jwt:Issuer"] ?? string.Empty,
-            //claims,
-            null,
-            expires: DateTime.Now.AddMinutes(120),
-            signingCredentials: credentials);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);*/
-
         var handler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(configuration["Jwt:Key"]);
         var credentials = new SigningCredentials(

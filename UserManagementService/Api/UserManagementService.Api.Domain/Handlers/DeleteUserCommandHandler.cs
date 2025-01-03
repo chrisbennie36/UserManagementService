@@ -2,10 +2,11 @@ using UserManagementService.Api.Data;
 using UserManagementService.Api.Domain.Commands;
 using MediatR;
 using Serilog;
+using UserManagementService.Api.Domain.Results;
 
 namespace UserManagementService.Api.Domain.Handlers;
 
-public class DeleteUserCommandHandler: IRequestHandler<DeleteUserCommand, bool>
+public class DeleteUserCommandHandler: IRequestHandler<DeleteUserCommand, DomainResult>
 {
     private readonly AppDbContext appDbContext;
 
@@ -14,7 +15,7 @@ public class DeleteUserCommandHandler: IRequestHandler<DeleteUserCommand, bool>
         this.appDbContext = appDbContext;
     }
 
-    public async Task<bool> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
+    public async Task<DomainResult> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -25,11 +26,11 @@ public class DeleteUserCommandHandler: IRequestHandler<DeleteUserCommand, bool>
         }
         catch(Exception e)
         {
-            Log.Error($"Error when deleting a {nameof(User)} from the database: {e.Message}");
-            return false;
+            Log.Error($"Error when deleting a {nameof(User)} with ID {request.userId} from the database: {e.Message}");
+            return new DomainResult(ResponseStatus.Error, $"Error when deleting a {nameof(User)} from the database");
         }
 
-        return true;
+        return new DomainResult(ResponseStatus.Success);
     }
 }
 
