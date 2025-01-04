@@ -36,13 +36,6 @@ public class UserController : ControllerBase
         var result = await sender.Send(new GetUserByIdQuery(userId));
 
         return result.ToActionResult();
-
-        if(result.status == ResponseStatus.NotFound)
-        {
-            return NotFound();
-        }
-
-        return Ok(mapper.Map<UserResponse>(result));
     }
 
     [HttpPost("/api/User/GetUserByCredentials")]
