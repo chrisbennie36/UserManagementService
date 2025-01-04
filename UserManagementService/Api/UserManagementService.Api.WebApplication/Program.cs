@@ -15,6 +15,7 @@ using Serilog.Sinks.AwsCloudWatch;
 using Microsoft.AspNetCore.Identity.Data;
 using Amazon;
 using Microsoft.EntityFrameworkCore;
+using UserManagementService.Api.WebApplication.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,24 +53,24 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     {
         ValidateIssuer = false,
         ValidateAudience = false,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"] ?? string.Empty))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration.GetStringValue("Jwt:Key")))
     };
 });
 
-EncryptionHelper.SetEncryptionKey(builder.Configuration["Encryption:Key"] ?? string.Empty);
-EncryptionHelper.SetInitialisationVector(builder.Configuration["Encryption:IV"] ?? string.Empty);
+EncryptionHelper.SetEncryptionKey(builder.Configuration.GetStringValue("Encryption:Key"));
+EncryptionHelper.SetInitialisationVector(builder.Configuration.GetStringValue("Encryption:IV"));
 
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-if(Boolean.Parse(builder.Configuration["AwsCloudwatchLogging:Enabled"]) == true)
+if(builder.Configuration.GetBoolValue("AwsCloudwatchLogging:Enabled") == true)
 {
-    var client = new AmazonCloudWatchLogsClient(new BasicAWSCredentials(builder.Configuration["AwsCloudwatchLogging:AccessKey"], builder.Configuration["AwsCloudwatchLogging:SecretKey"]), RegionEndpoint.USEast1);
+    var client = new AmazonCloudWatchLogsClient(new BasicAWSCredentials(builder.Configuration.GetStringValue("AwsCloudwatchLogging:AccessKey"), builder.Configuration.GetStringValue("AwsCloudwatchLogging:SecretKey")), RegionEndpoint.USEast1);
 
     Log.Logger = new LoggerConfiguration().WriteTo.AmazonCloudWatch(
-        logGroup: builder.Configuration["AwsCloudwatchLogging:LogGroup"],
-        logStreamPrefix: builder.Configuration["AwsCloudwatchLogging:LogStreamPrefix"],
+        logGroup: builder.Configuration.GetStringValue("AwsCloudwatchLogging:LogGroup"),
+        logStreamPrefix: builder.Configuration.GetStringValue("AwsCloudwatchLogging:LogStreamPrefix"),
         restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Verbose,
         createLogGroup: true,
         appendUniqueInstanceGuid: true,
