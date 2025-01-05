@@ -12,6 +12,11 @@
     <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Utilities.dll">
+      <HintPath>..\..\Refs\Utilities.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\UserManagementService.Api.Data\UserManagementService.Api.Data.csproj" />
     <ProjectReference Include="..\..\Shared\UserManagementService.Shared.Enums\UserManagementService.Shared.Enums.csproj" />
   </ItemGroup>

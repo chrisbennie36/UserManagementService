@@ -5,6 +5,7 @@ using UserManagementService.Api.Domain.Results;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using Utilities.ResultPattern;
 
 namespace UserManagementService.Api.Domain.Handlers;
 

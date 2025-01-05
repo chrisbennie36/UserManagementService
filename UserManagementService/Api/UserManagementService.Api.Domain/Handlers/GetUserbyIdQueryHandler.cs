@@ -4,6 +4,7 @@ using UserManagementService.Api.Domain.Queries;
 using UserManagementService.Api.Domain.Results;
 using MediatR;
 using Serilog;
+using Utilities.ResultPattern;
 
 namespace UserManagementService.Api.Domain.Handlers;
 

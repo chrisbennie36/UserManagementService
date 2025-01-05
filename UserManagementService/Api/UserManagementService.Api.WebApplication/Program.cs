@@ -12,10 +12,9 @@ using UserManagementService.Api.WebApplication.ExceptionHandler;
 using Amazon.CloudWatchLogs;
 using Amazon.Runtime;
 using Serilog.Sinks.AwsCloudWatch;
-using Microsoft.AspNetCore.Identity.Data;
 using Amazon;
 using Microsoft.EntityFrameworkCore;
-using UserManagementService.Api.WebApplication.Extensions;
+using Utilities.ConfigurationManager.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 

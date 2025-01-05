@@ -4,6 +4,7 @@ using MediatR;
 using Serilog;
 using AutoMapper;
 using UserManagementService.Api.Domain.Results;
+using Utilities.ResultPattern;
 
 namespace UserManagementService.Api.Domain.Handlers;
 

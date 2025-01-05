@@ -8,8 +8,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using UserManagementService.Api.WebApplication.Responses;
-using UserManagementService.Api.Domain.Results;
 using Serilog;
+using Utilities.ResultPattern.Extensions;
+using Utilities.ResultPattern;
 
 namespace UserManagementService.Api.WebApplication.Controllers;
 

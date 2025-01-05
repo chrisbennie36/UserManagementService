@@ -2,7 +2,7 @@ using UserManagementService.Api.Data;
 using UserManagementService.Api.Domain.Commands;
 using MediatR;
 using Serilog;
-using UserManagementService.Api.Domain.Results;
+using Utilities.ResultPattern;
 
 namespace UserManagementService.Api.Domain.Handlers;
 

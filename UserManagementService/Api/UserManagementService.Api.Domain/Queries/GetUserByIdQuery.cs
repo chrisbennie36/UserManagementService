@@ -1,5 +1,6 @@
 using UserManagementService.Api.Domain.Results;
 using MediatR;
+using Utilities.ResultPattern;
 
 namespace UserManagementService.Api.Domain.Queries;
 
