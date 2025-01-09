@@ -7,10 +7,12 @@ ENV DOTNET_URLS=http://+:8000
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0.404 AS build
 WORKDIR /src
+RUN mkdir -p src/Refs
 COPY ["Api/UserManagementService.Api.Data/UserManagementService.Api.Data.csproj", "Api/Data"]
 COPY ["Api/UserManagementService.Api.Domain/UserManagementService.Api.Domain.csproj", "Api/Domain"]
 COPY ["Api/UserManagementService.Api.WebApplication/UserManagementService.Api.WebApplication.csproj", "Api/WebApplication"]
 COPY ["Shared/UserManagementService.Shared.Enums/UserManagementService.Shared.Enums.csproj", "Shared/Enums"]
+COPY ["Refs/Utilities.dll", "Refs/Utilities"]
 COPY . .
 WORKDIR "/src"
 RUN dotnet restore "Api/UserManagementService.Api.WebApplication/UserManagementService.Api.WebApplication.csproj"

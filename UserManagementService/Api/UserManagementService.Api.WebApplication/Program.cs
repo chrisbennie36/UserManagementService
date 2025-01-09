@@ -79,7 +79,7 @@ if(builder.Configuration.GetBoolValue("AwsCloudwatchLogging:Enabled") == true)
 }
 else
 {
-    Log.Logger = new LoggerConfiguration().WriteTo.File("./Logs/logs-", rollingInterval: RollingInterval.Day).MinimumLevel.Debug().CreateLogger();
+    Log.Logger = new LoggerConfiguration().WriteTo.File($"{builder.Configuration.GetStringValue("AwsCloudwatchLogging:Location")}/logs-", rollingInterval: RollingInterval.Day).MinimumLevel.Debug().CreateLogger();
 }
 
 if(app.Environment.IsDevelopment())

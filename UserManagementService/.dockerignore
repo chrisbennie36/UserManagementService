@@ -3,7 +3,6 @@ obj/
 appsettings.development.json
 Logs/
 Files/
-Refs/
 .vscode/
 Lambdas/
 Build
