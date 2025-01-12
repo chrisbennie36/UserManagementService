@@ -1,21 +1,22 @@
-using UserManagementService.Api.Data;
 using UserManagementService.Api.Domain.Commands;
 using MediatR;
-using Serilog;
 using AutoMapper;
 using UserManagementService.Api.Domain.Results;
 using Utilities.ResultPattern;
+using UserManagementService.Api.Data.Repositories;
+using UserManagementService.Api.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace UserManagementService.Api.Domain.Handlers;
 
 public class AddUserCommandHandler: IRequestHandler<AddUserCommand, DomainResult<UserResult>>
 {
-    private readonly AppDbContext appDbContext;
     private readonly IMapper mapper;
+    private IEntityRepository<User> userRepository;
 
-    public AddUserCommandHandler(AppDbContext appDbContext, IMapper mapper)
+    public AddUserCommandHandler(IMapper mapper, IEntityRepository<User> userRepository)
     {
-        this.appDbContext = appDbContext;
+        this.userRepository = userRepository;
         this.mapper = mapper;
     }
 
@@ -23,31 +24,22 @@ public class AddUserCommandHandler: IRequestHandler<AddUserCommand, DomainResult
     {
         try
         {
-            User createdUser = appDbContext.Users.Add(new User 
+            User user = new User
             {
                 Username = request.username,
                 Password = request.password,
-                Role = request.role,
                 CreatedUtc = DateTime.UtcNow
-            }).Entity;
+            };
 
-            await appDbContext.SaveChangesAsync();
-
-            if(createdUser == null)
-            {
-                return new DomainResult<UserResult>(ResponseStatus.Error, null, $"Could not create a {nameof(User)} in the database");
-            }
-
+            User createdUser = await userRepository.AddAsync(user);
             UserResult userResult = mapper.Map<UserResult>(createdUser);
 
             return new DomainResult<UserResult>(ResponseStatus.Success, userResult);
 
         }
-        catch(Exception e)
+        catch(DbUpdateException)
         {
-            string errorMessage = $"Error when writing a {nameof(User)} to the database: {e.Message}";
-            Log.Error(errorMessage);
-            return new DomainResult<UserResult>(ResponseStatus.Error, null, errorMessage);
+            return new DomainResult<UserResult>(ResponseStatus.Error, null, $"Unable to add a {nameof(User)}, see the logs for more info");
         }
     }
 }

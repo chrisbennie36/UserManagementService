@@ -1,33 +1,30 @@
-using UserManagementService.Api.Data;
 using UserManagementService.Api.Domain.Commands;
 using MediatR;
-using Serilog;
 using Utilities.ResultPattern;
+using UserManagementService.Api.Data.Entities;
+using UserManagementService.Api.Data.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace UserManagementService.Api.Domain.Handlers;
 
 public class DeleteUserCommandHandler: IRequestHandler<DeleteUserCommand, DomainResult>
 {
-    private readonly AppDbContext appDbContext;
+    private readonly IEntityRepository<User> userRepository;
 
-    public DeleteUserCommandHandler(AppDbContext appDbContext)
+    public DeleteUserCommandHandler(IEntityRepository<User> userRepository)
     {
-        this.appDbContext = appDbContext;
+        this.userRepository = userRepository;
     }
 
     public async Task<DomainResult> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
     {
         try
         {
-            //Note that this results in two operations, a GET and a DELETE. It's also possible to create a stub Message object with just the ID and then call the context.Remove method which will
-            //only trigger one DELETE operation: https://www.learnentityframeworkcore.com/dbcontext/deleting-data
-            appDbContext.Remove(appDbContext.Users.Single(m => m.Id == request.userId));
-            await appDbContext.SaveChangesAsync();
+            await userRepository.DeleteAsync(request.userId);
         }
-        catch(Exception e)
+        catch(DbUpdateException)
         {
-            Log.Error($"Error when deleting a {nameof(User)} with ID {request.userId} from the database: {e.Message}");
-            return new DomainResult(ResponseStatus.Error, $"Error when deleting a {nameof(User)} from the database");
+            return new DomainResult(ResponseStatus.Error, $"Unable to delete a {nameof(User)} from the database");
         }
 
         return new DomainResult(ResponseStatus.Success);

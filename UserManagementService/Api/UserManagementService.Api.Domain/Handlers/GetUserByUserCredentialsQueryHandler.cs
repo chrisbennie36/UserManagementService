@@ -6,17 +6,19 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Utilities.ResultPattern;
+using UserManagementService.Api.Data.Entities;
+using UserManagementService.Api.Data.Repositories;
 
 namespace UserManagementService.Api.Domain.Handlers;
 
 public class GetUserByUserCredentialsQueryHandler: IRequestHandler<GetUserByUserCredentialsQuery, DomainResult<UserResult>>
 {
-    private readonly AppDbContext appDbContext;
+    private readonly UserRepository userRepository;
     private readonly IMapper mapper;
 
-    public GetUserByUserCredentialsQueryHandler(AppDbContext appDbContext, IMapper mapper)
+    public GetUserByUserCredentialsQueryHandler(UserRepository userRepository, IMapper mapper)
     {
-        this.appDbContext = appDbContext;
+        this.userRepository = userRepository;
         this.mapper = mapper;
     }
 
@@ -24,9 +26,7 @@ public class GetUserByUserCredentialsQueryHandler: IRequestHandler<GetUserByUser
     {
         try
         {
-            User? existingUser = await appDbContext.Users
-            .AsNoTracking()
-            .SingleOrDefaultAsync(u => u.Username == request.username && u.Password == request.password);
+            User? existingUser = await userRepository.GetUserByCredentialsAsync(request.username, request.password);
             
             if(existingUser == null)
             {

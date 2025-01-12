@@ -15,6 +15,8 @@ using Serilog.Sinks.AwsCloudWatch;
 using Amazon;
 using Microsoft.EntityFrameworkCore;
 using Utilities.ConfigurationManager.Extensions;
+using UserManagementService.Api.Data.Repositories;
+using UserManagementService.Api.Data.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,8 +41,10 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AddUs
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddValidatorsFromAssemblyContaining<UserDtoValidator>();
 
-builder.Services.AddScoped<AppDbContext>(db => new AppDbContext(new DbContextOptionsBuilder().UseNpgsql(builder.Configuration.GetConnectionString("ApiLocalConnectionString")).Options));
+builder.Services.AddDbContext<AppDbContext>();
 builder.Services.AddTransient<IMigrationsRepository, MigrationsRepository>();
+builder.Services.AddTransient<IEntityRepository<User>, UserRepository>();
+builder.Services.AddTransient<UserRepository>();    //For concrete class constructor injection 
 
 builder.Services.AddProblemDetails().AddExceptionHandler<GlobalExceptionHandler>();
 

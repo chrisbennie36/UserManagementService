@@ -1,45 +1,39 @@
-using UserManagementService.Api.Data;
 using UserManagementService.Api.Domain.Commands;
 using MediatR;
-using Serilog;
 using Utilities.ResultPattern;
+using UserManagementService.Api.Data.Entities;
+using UserManagementService.Api.Data.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace UserManagementService.Api.Domain.Handlers;
 
 public class UpdateUserCommandHandler: IRequestHandler<UpdateUserCommand, DomainResult>
 {
-    private readonly AppDbContext appDbContext;
+    private readonly IEntityRepository<User> userRepository;
 
-    public UpdateUserCommandHandler(AppDbContext appDbContext)
+    public UpdateUserCommandHandler(IEntityRepository<User> userRepository)
     {
-        this.appDbContext = appDbContext;
+        this.userRepository = userRepository;
     }
 
     public async Task<DomainResult> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
+        User userDataToUpdate = new User 
+        {
+            Id = request.userId,
+            Username = request.username,
+            Password = request.password,
+            UpdatedUtc = DateTime.UtcNow
+        };
+
         try
         {
-            User? existingUser = await appDbContext.FindAsync<User>(request.userId);
-
-            if(existingUser == null)
-            {
-                Log.Error($"Coudln't find a {nameof(User)} to update for ID {request.userId}");
-                return new DomainResult(ResponseStatus.NotFound, $"Couldn't find a {nameof(User)} to update");
-            }
-
-            existingUser.Username = request.username;
-            existingUser.Password = request.password;
-            existingUser.Role = request.role;
-            existingUser.UpdatedUtc = DateTime.UtcNow;
-
-            await appDbContext.SaveChangesAsync();
+            await userRepository.UpdateAsync(userDataToUpdate);
             return new DomainResult(ResponseStatus.Success);
-        }
-        catch(Exception e)
+        } 
+        catch(DbUpdateException)
         {
-            string errorMessage = $"Error when writing a {nameof(User)} to the database: {e.Message}";
-            Log.Error(errorMessage);
-            return new DomainResult(ResponseStatus.Error, errorMessage);
+            return new DomainResult(ResponseStatus.Error, $"Unable to update a {nameof(User)} in the database");
         }
     }
 }

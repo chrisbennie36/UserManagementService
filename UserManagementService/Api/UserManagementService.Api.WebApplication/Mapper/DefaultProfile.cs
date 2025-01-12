@@ -1,5 +1,5 @@
 using AutoMapper;
-using UserManagementService.Api.Data;
+using UserManagementService.Api.Data.Entities;
 using UserManagementService.Api.Domain.Results;
 using UserManagementService.Api.WebApplication.Responses;
 

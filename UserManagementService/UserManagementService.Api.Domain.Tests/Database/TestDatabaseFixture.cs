@@ -34,6 +34,6 @@ public class TestDatabaseFixture
 
      public AppDbContext CreateContext()
      {
-        return new AppDbContext(new DbContextOptionsBuilder<AppDbContext>().UseNpgsql(ConnectionString).Options);
+        return new AppDbContext(null, new DbContextOptionsBuilder<AppDbContext>().UseNpgsql(ConnectionString).Options);
      }
 }
