@@ -16,15 +16,15 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Utilities.dll">
-      <HintPath>..\Refs\Utilities.dll</HintPath>
+      <HintPath>..\..\Refs\Utilities.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Api\UserManagementService.Api.Data\UserManagementService.Api.Data.csproj" />
-    <ProjectReference Include="..\Api\UserManagementService.Api.Domain\UserManagementService.Api.Domain.csproj" />
-    <ProjectReference Include="..\Api\UserManagementService.Api.WebApplication\UserManagementService.Api.WebApplication.csproj" />
+    <ProjectReference Include="..\..\Api\UserManagementService.Api.WebApplication\UserManagementService.Api.WebApplication.csproj" />
+    <ProjectReference Include="..\..\Api\UserManagementService.Api.Domain\UserManagementService.Api.Domain.csproj" />
+    <ProjectReference Include="..\..\Api\UserManagementService.Api.Data\UserManagementService.Api.Data.csproj" />
   </ItemGroup>
 </Project>
