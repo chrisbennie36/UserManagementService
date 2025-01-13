@@ -7,6 +7,7 @@ namespace UserManagementService.Api.Data.Repositories;
 public abstract class EfCoreEntityRepository<T> : IEntityRepository<T> where T : EntityBase
 {
     private readonly AppDbContext appDbContext;
+    private readonly DbSet<T> dbEntities;
 
     //ToDo: At the moment, we are saving after every function call. An improvement would be to keep track
     //of the transcation in a Unit of Work and only save at the end of the transaction
@@ -14,6 +15,13 @@ public abstract class EfCoreEntityRepository<T> : IEntityRepository<T> where T :
     {
         ArgumentNullException.ThrowIfNull(appDbContext);
         this.appDbContext = appDbContext;
+
+        if(appDbContext.Set<T>() == null)
+        {
+            throw new NullReferenceException("Could not retrieve an entity collection to work with");
+        }
+
+        dbEntities = appDbContext.Set<T>();
     }
 
     public async Task<T> AddAsync(T entity, CancellationToken cancellationToken = default)
@@ -44,7 +52,7 @@ public abstract class EfCoreEntityRepository<T> : IEntityRepository<T> where T :
             return;
         }
 
-        GetDbDet().Remove(entityToDelete);
+        dbEntities.Remove(entityToDelete);
 
         try
         {
@@ -59,7 +67,7 @@ public abstract class EfCoreEntityRepository<T> : IEntityRepository<T> where T :
 
     public async Task<T?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
     {
-        return await GetDbDet().AsNoTracking().SingleOrDefaultAsync(e => e.Id == id, cancellationToken);
+        return await dbEntities.AsNoTracking().SingleOrDefaultAsync(e => e.Id == id, cancellationToken);
     }
 
     public async Task UpdateAsync(T entity, CancellationToken cancellationToken = default)
@@ -75,15 +83,5 @@ public abstract class EfCoreEntityRepository<T> : IEntityRepository<T> where T :
             Log.Error($"Could not update a {nameof(T)} in the database: {e.Message} {e.InnerException?.Message}");
             throw;
         }
-    }
-
-    private DbSet<T> GetDbDet()
-    {
-        if(appDbContext.Set<T>() == null)
-        {
-            throw new NullReferenceException("Could not retrieve an entity collection to work with");
-        }
-
-        return appDbContext.Set<T>();
     }
 }
