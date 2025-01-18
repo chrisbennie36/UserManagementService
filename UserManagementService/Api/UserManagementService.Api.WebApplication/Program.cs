@@ -49,7 +49,7 @@ builder.Services.AddTransient<UserRepository>();    //For concrete class constru
 
 builder.Services.AddProblemDetails().AddExceptionHandler<GlobalExceptionHandler>();
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => 
+/*builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => 
 {
     options.RequireHttpsMetadata = false;   //NOTE: ONLY FOR DEVELOPMENT
     options.Authority = "localhost:5175";
@@ -59,7 +59,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ValidateAudience = false,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration.GetStringValue("Jwt:Key")))
     };
-});
+});*/
 
 builder.Services.AddAuthentication(options =>
 {
@@ -68,7 +68,7 @@ builder.Services.AddAuthentication(options =>
 })
 .AddCookie(options =>
 {
-    options.LoginPath = "/Account/Login";
+    options.LoginPath = "/api/Account/Login";
 })
 .AddOpenIdConnect(options =>
 {
@@ -77,8 +77,9 @@ builder.Services.AddAuthentication(options =>
     options.ClientSecret = builder.Configuration.GetStringValue("Keycloak:ClientSecret");
     options.ResponseType = "code";
     options.SaveTokens = true;
+    options.RequireHttpsMetadata = false;   //ONLY FOR DEV
     options.Scope.Add("openid");
-    options.CallbackPath = "api/user/login-callback"; // Update callback path
+    options.CallbackPath = "/api/user/login-callback"; // Update callback path
     //options.SignedOutCallbackPath = "/logout-callback"; // Update signout callback path
     options.TokenValidationParameters = new TokenValidationParameters
     {
