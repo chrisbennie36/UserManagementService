@@ -1,9 +1,7 @@
 using AutoMapper;
-using UserManagementService.Api.Data;
 using UserManagementService.Api.Domain.Queries;
 using UserManagementService.Api.Domain.Results;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Utilities.ResultPattern;
 using UserManagementService.Api.Data.Entities;

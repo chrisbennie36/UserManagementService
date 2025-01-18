@@ -13,10 +13,11 @@ using Amazon.CloudWatchLogs;
 using Amazon.Runtime;
 using Serilog.Sinks.AwsCloudWatch;
 using Amazon;
-using Microsoft.EntityFrameworkCore;
 using Utilities.ConfigurationManager.Extensions;
 using UserManagementService.Api.Data.Repositories;
 using UserManagementService.Api.Data.Entities;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -60,9 +61,36 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+})
+.AddCookie(options =>
+{
+    options.LoginPath = "/Account/Login";
+})
+.AddOpenIdConnect(options =>
+{
+    options.Authority = $"{builder.Configuration.GetStringValue("Keycloak:BaseUrl")}/auth/realms/{builder.Configuration.GetStringValue("Keycloak:Realm")}";
+    options.ClientId = builder.Configuration.GetStringValue("Keycloak:ClientId");
+    options.ClientSecret = builder.Configuration.GetStringValue("Keycloak:ClientSecret");
+    options.ResponseType = "code";
+    options.SaveTokens = true;
+    options.Scope.Add("openid");
+    options.CallbackPath = "api/user/login-callback"; // Update callback path
+    //options.SignedOutCallbackPath = "/logout-callback"; // Update signout callback path
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        NameClaimType = "preferred_username",
+        RoleClaimType = "roles"
+    };
+});
+
 EncryptionHelper.SetEncryptionKey(builder.Configuration.GetStringValue("Encryption:Key"));
 EncryptionHelper.SetInitialisationVector(builder.Configuration.GetStringValue("Encryption:IV"));
 
+builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
@@ -100,6 +128,31 @@ app.UseAuthentication();
 app.UseRouting();
 app.UseAuthorization();
 
+app.Map("/api/user/login-callback", callback => 
+{
+    callback.Run(async context => 
+    {
+        await context.Response.WriteAsync("Authentication Successful");
+    });
+});
+
+/*app.Map("/logout-callback", callback => 
+{
+    callback.Run(async context => 
+    {
+        await context.Response.WriteAsync("Sign Out Successful");
+    });
+});*/
+
 app.MapControllers();
+
+app.UseEndpoints(endpoints => 
+{
+    endpoints.MapControllerRoute(
+        name: "login-callback",
+        pattern: "login-callback",
+        defaults: new { controller = "User", action = "LoginCallback"}
+    );
+});
 
 app.Run();
