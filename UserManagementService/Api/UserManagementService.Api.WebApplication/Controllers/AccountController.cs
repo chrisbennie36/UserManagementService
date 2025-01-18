@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace UserManagementService.Api.WebApplication.Controllers;
 
@@ -49,7 +50,7 @@ public class AccountController : ControllerBase
 
     public async Task<IActionResult> LoginCallback()
     {
-        var authResult = await HttpContext.AuthenticateAsync(OpenIdConnectDefaults.AuthenticationScheme);
+        var authResult = await HttpContext.AuthenticateAsync(JwtBearerDefaults.AuthenticationScheme);
         if (authResult?.Succeeded != true)
         {
             // Handle failed authentication
