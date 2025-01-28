@@ -23,5 +23,5 @@ Microservice is deployed in AWS as an ElasticBeanstalk application. The database
 # Docker
 
 Build image => docker build -f Dockerfile -t user-management-service .
-Run Container => docker run --rm -p <ConfiguredPortNumber>:8000 user-management-service
+Run Container => docker run --rm -p 5175:8000 user-management-service
 

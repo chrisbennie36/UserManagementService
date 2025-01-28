@@ -25,7 +25,7 @@ public class AppDbContext : DbContext
     {
         EntityTypeBuilder<User> userEntityBuilder = modelBuilder.Entity<User>();
 
-         //userEntityBuilder.Property(x => x.Password).HasConversion(v => EncryptionHelper.Encrypt(v), v => EncryptionHelper.Decrypt(v));
+         userEntityBuilder.Property(x => x.Password).HasConversion(v => EncryptionHelper.Encrypt(v), v => EncryptionHelper.Decrypt(v));
     }
 
     public DbSet<User> Users { get; set; }

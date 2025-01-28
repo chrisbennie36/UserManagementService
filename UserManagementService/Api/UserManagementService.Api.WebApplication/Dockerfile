@@ -1,6 +1,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0.404 AS base
 WORKDIR /app
-EXPOSE 5179
+ENV ASPNETCORE_ENVIRONMENT=Development
+EXPOSE 5175
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0.404 AS build
 WORKDIR /src
@@ -18,4 +19,4 @@ RUN dotnet publish "UserManagementService.Api.WebApplication/UserManagementServi
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT [ "dotnet", "UserManagementService.Api.WebApplication.dll" ]
+ENTRYPOINT [ "dotnet", "run", "--environment", "Development", "UserManagementService.Api.WebApplication.dll"]

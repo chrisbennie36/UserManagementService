@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using UserManagementService.Api.Data;
 using UserManagementService.Api.Domain.Commands;
@@ -19,7 +20,10 @@ using UserManagementService.Api.Data.Entities;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(new WebApplicationOptions 
+{
+    EnvironmentName = GetEnvironmentName()
+});
 
 builder.Services.AddControllers();
 builder.Services.AddMvcCore().AddApiExplorer();
@@ -49,7 +53,7 @@ builder.Services.AddTransient<UserRepository>();    //For concrete class constru
 
 builder.Services.AddProblemDetails().AddExceptionHandler<GlobalExceptionHandler>();
 
-/*builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => 
 {
     options.RequireHttpsMetadata = false;   //NOTE: ONLY FOR DEVELOPMENT
     options.Authority = "localhost:5175";
@@ -59,9 +63,9 @@ builder.Services.AddProblemDetails().AddExceptionHandler<GlobalExceptionHandler>
         ValidateAudience = false,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration.GetStringValue("Jwt:Key")))
     };
-});*/
+});
 
-builder.Services.AddAuthentication(options =>
+/*builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -86,7 +90,7 @@ builder.Services.AddAuthentication(options =>
         NameClaimType = "preferred_username",
         RoleClaimType = "roles"
     };
-});
+});*/
 
 EncryptionHelper.SetEncryptionKey(builder.Configuration.GetStringValue("Encryption:Key"));
 EncryptionHelper.SetInitialisationVector(builder.Configuration.GetStringValue("Encryption:IV"));
@@ -157,3 +161,24 @@ app.UseEndpoints(endpoints =>
 });
 
 app.Run();
+
+static string GetEnvironmentName()
+{
+    string? configuredEnv = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+    if(!string.IsNullOrWhiteSpace(configuredEnv))
+    {
+        switch(configuredEnv.ToLower())
+        {
+            case "staging":
+                return Environments.Staging;
+            case "production":
+                return Environments.Production;
+            default:
+                return Environments.Development;
+        }
+    }
+
+    //ToDo: When running from Docker, this default value is returned - seems the ENV statement in the Dockerfile isn't setting the environment variable as expected...
+    return Environments.Development;
+}

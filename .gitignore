@@ -2,3 +2,4 @@ bin/
 obj/
 Logs/
 appsettings.Development.json
+appsettings.Test.json
