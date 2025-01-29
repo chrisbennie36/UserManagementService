@@ -1,5 +1,3 @@
-
-using System.Runtime;
 using Amazon.CDK;
 using Amazon.CDK.AWS.EC2;
 using Amazon.CDK.AWS.ElasticBeanstalk;
@@ -17,6 +15,7 @@ public class UserServiceElasticBeanstalkStackProps : StackProps
 public class UserServiceElasticBeanstalkStack : Stack
 {
     public CfnApplication userServiceElasticBeanstalkStack { get; set; }
+    public CfnEnvironment UserServiceEbEnvironment { get; set; }
 
     public UserServiceElasticBeanstalkStack(Construct scope, string id, UserServiceElasticBeanstalkStackProps props) : base(scope, id)
     {
@@ -38,15 +37,15 @@ public class UserServiceElasticBeanstalkStack : Stack
             Path = "../application.zip"
         });
 
-        userServiceElasticBeanstalkStack = new Amazon.CDK.AWS.ElasticBeanstalk.CfnApplication(this, "user-service-elb-app", new CfnApplicationProps
+        userServiceElasticBeanstalkStack = new CfnApplication(this, "user-service-elb-app", new CfnApplicationProps
         {
             ApplicationName = props.ApplicationName,
         });
 
-        CfnApplicationVersion applicationVersion = new Amazon.CDK.AWS.ElasticBeanstalk.CfnApplicationVersion(this, "user-service-elb-app-version", new CfnApplicationVersionProps
+        CfnApplicationVersion applicationVersion = new CfnApplicationVersion(this, "user-service-elb-app-version", new CfnApplicationVersionProps
         {
             ApplicationName = props.ApplicationName,
-            SourceBundle = new Amazon.CDK.AWS.ElasticBeanstalk.CfnApplicationVersion.SourceBundleProperty
+            SourceBundle = new CfnApplicationVersion.SourceBundleProperty
             {
                 S3Bucket = archive.S3BucketName,
                 S3Key = archive.S3ObjectKey
@@ -56,6 +55,7 @@ public class UserServiceElasticBeanstalkStack : Stack
         CfnEnvironment userServiceElasticBeanstalkEnvironment = new CfnEnvironment(this, "user-service-elb-environment", new CfnEnvironmentProps
         {
             ApplicationName = props.ApplicationName,
+            CnamePrefix = "usermanagementservice",
             OptionSettings = new CfnEnvironment.OptionSettingProperty[] 
             {
                 new CfnEnvironment.OptionSettingProperty{ Namespace = "aws:autoscaling:launchconfiguration", OptionName = "IamInstanceProfile", Value = instanceProfile.InstanceProfileArn },
@@ -70,5 +70,13 @@ public class UserServiceElasticBeanstalkStack : Stack
 
         userServiceElasticBeanstalkEnvironment.AddDependency(userServiceElasticBeanstalkStack);
         applicationVersion.AddDependency(userServiceElasticBeanstalkStack);
+
+        string existingSecurityGroupId = Fn.ImportValue("RecipeRandomizerDbSecurityGroupId");
+
+        ISecurityGroup securityGroup = SecurityGroup.FromSecurityGroupId(this, "recipe-randomizer-security-group", existingSecurityGroupId);
+
+        //ToDo: NAT Gateway
+        securityGroup.AddIngressRule(Peer.Ipv4("34.205.203.205/32"), Port.AllTcp(), "UserServicePublicIp");
+        securityGroup.AddIngressRule(Peer.Ipv4($"172.31.4.22/32"), Port.AllTcp(), "UserServicePrivateIp");
     }
 }

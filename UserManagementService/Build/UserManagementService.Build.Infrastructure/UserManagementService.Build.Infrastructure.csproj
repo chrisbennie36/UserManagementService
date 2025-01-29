@@ -14,4 +14,9 @@
     <PackageReference Include="Amazon.Jsii.Analyzers" Version="*" PrivateAssets="all" />
     -->
   </ItemGroup>
+<ItemGroup>
+    <Reference Include="Utilities.RecipeRandomizer.Infrastructure.dll">
+      <HintPath>..\..\Refs\Utilities.RecipeRandomizer.Infrastructure.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>
